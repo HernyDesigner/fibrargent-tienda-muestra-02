@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alma - Almohadas Dubella</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #0066cc;
+        }
+
+        .product-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            position: relative;
+            background: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .zoom-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-info h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .product-description {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .product-meta {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .size-selection {
+            margin-bottom: 30px;
+        }
+
+        .size-selection h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .size-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .size-btn {
+            padding: 12px 24px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .size-btn:hover {
+            border-color: #0066cc;
+        }
+
+        .size-btn.active {
+            border-color: #0066cc;
+            background: #0066cc;
+            color: white;
+        }
+
+        .pricing-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .unit-price {
+            margin-bottom: 15px;
+        }
+
+        .unit-price label {
+            font-size: 14px;
+            color: #666;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .unit-price .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .unit-price .price.discounted {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .quantity-section {
+            margin-bottom: 20px;
+        }
+
+        .quantity-section h4 {
+            font-size: 15px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .quantity-input-wrapper {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #f5f5f5;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .qty-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .quick-qty-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quick-qty-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .quick-qty-btn:hover {
+            background: #f5f5f5;
+            border-color: #0066cc;
+        }
+
+        .total-section {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .total-row.main {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+            padding-top: 10px;
+            border-top: 2px solid #e0e0e0;
+            margin-top: 10px;
+        }
+
+        .discount-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .savings-text {
+            color: #28a745;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 16px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #0052a3;
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .discount-info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #0066cc;
+        }
+
+        .discount-info strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .product-section {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .quantity-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .quick-qty-btns {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Inicio</a> / <a href="/almohadas">Almohadas</a> / Alma
+        </div>
+
+        <div class="product-section">
+            <div class="product-image">
+                <img src="https://placehold.co/600x600/e0e0e0/666?text=Almohada+Dubella+Alma" alt="Almohada Alma">
+                <div class="zoom-icon">🔍</div>
+            </div>
+
+            <div class="product-info">
+                <h1>Alma</h1>
+                <p class="product-description">
+                    Almohada Alma Hipersoft de Fibrargent: núcleo de espuma suave, altura media y soporte adaptable para un descanso confortable.
+                </p>
+                <div class="product-meta">
+                    <strong>SKU:</strong> 0110 | <strong>Categoría:</strong> <a href="/almohadas">Almohadas</a>
+                </div>
+
+                <div class="size-selection">
+                    <h3>Seleccionar medida:</h3>
+                    <div class="size-buttons">
+                        <button class="size-btn active" data-size="070x040" data-price="208927.50">070x040 cm</button>
+                        <button class="size-btn" data-size="070x044" data-price="225840.00">070x044 cm</button>
+                        <button class="size-btn" data-size="070x050" data-price="245680.30">070x050 cm</button>
+                        <button class="size-btn" data-size="080x040" data-price="238550.80">080x040 cm</button>
+                    </div>
+                </div>
+
+                <div class="pricing-section">
+                    <div class="unit-price">
+                        <label>Precio unitario:</label>
+                        <div>
+                            <span class="price" id="unitPrice">$ 208.927,50</span>
+                        </div>
+                    </div>
+
+                    <div class="discount-info">
+                        <strong>🎉 Descuentos disponibles:</strong>
+                        • 5% de descuento desde 6 unidades<br>
+                        • 10% de descuento desde 12 unidades<br>
+                        • 15% de descuento desde 24 unidades
+                    </div>
+
+                    <div class="quantity-section">
+                        <h4>Cantidad:</h4>
+                        <div class="quantity-controls">
+                            <div class="quantity-input-wrapper">
+                                <button class="qty-btn" id="decreaseBtn">-</button>
+                                <input type="number" class="qty-input" id="quantityInput" value="1" min="1" max="999">
+                                <button class="qty-btn" id="increaseBtn">+</button>
+                            </div>
+                            <div class="quick-qty-btns">
+                                <button class="quick-qty-btn" data-qty="6">+6</button>
+                                <button class="quick-qty-btn" data-qty="10">+10</button>
+                                <button class="quick-qty-btn" data-qty="12">+12</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="total-section">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$ 208.927,50</span>
+                        </div>
+                        <div class="total-row" id="discountRow" style="display: none;">
+                            <span>Descuento: <span class="discount-badge" id="discountBadge"></span></span>
+                            <span class="savings-text" id="discountAmount">- $ 0,00</span>
+                        </div>
+                        <div class="total-row main">
+                            <span>Total:</span>
+                            <span id="totalPrice">$ 208.927,50</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="add-to-cart-btn" id="addToCartBtn">Añadir a la cotización</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de productos
+        const products = {
+            '070x040': { price: 208927.50 },
+            '070x044': { price: 225840.00 },
+            '070x050': { price: 245680.30 },
+            '080x040': { price: 238550.80 }
+        };
+
+        // Descuentos por cantidad
+        const discounts = [
+            { minQty: 24, discount: 0.15, label: '15%' },
+            { minQty: 12, discount: 0.10, label: '10%' },
+            { minQty: 6, discount: 0.05, label: '5%' }
+        ];
+
+        let currentSize = '070x040';
+        let currentQuantity = 1;
+
+        // Función para formatear números
+        function formatCurrency(amount) {
+            return '$ ' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&.').replace(/\.(\d{2})$/, ',$1');
+        }
+
+        // Función para obtener descuento aplicable
+        function getApplicableDiscount(qty) {
+            for (let d of discounts) {
+                if (qty >= d.minQty) return d;
+            }
+            return null;
+        }
+
+        // Función para actualizar precios
+        function updatePricing() {
+            const unitPrice = products[currentSize].price;
+            const subtotal = unitPrice * currentQuantity;
+            const discount = getApplicableDiscount(currentQuantity);
+            
+            document.getElementById('unitPrice').textContent = formatCurrency(unitPrice);
+            document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+
+            if (discount) {
+                const discountAmount = subtotal * discount.discount;
+                const total = subtotal - discountAmount;
+                
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountBadge').textContent = discount.label + ' OFF';
+                document.getElementById('discountAmount').textContent = '- ' + formatCurrency(discountAmount);
+                document.getElementById('totalPrice').textContent = formatCurrency(total);
+            } else {
+                document.getElementById('discountRow').style.display = 'none';
+                document.getElementById('totalPrice').textContent = formatCurrency(subtotal);
+            }
+        }
+
+        // Event listeners para selección de tamaño
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentSize = this.dataset.size;
+                updatePricing();
+            });
+        });
+
+        // Event listeners para cantidad
+        document.getElementById('decreaseBtn').addEventListener('click', () => {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                document.getElementById('quantityInput').value = currentQuantity;
+                updatePricing();
+            }
+        });
+
+        document.getElementById('increaseBtn').addEventListener('click', () => {
+            if (currentQuantity < 999) {
+                currentQuantity++;
+                document.getElementById('quantityInput').value = currentQuantity;
+                updatePricing();
+            }
+        });
+
+        document.getElementById('quantityInput').addEventListener('input', function() {
+            let val = parseInt(this.value) || 1;
+            if (val < 1) val = 1;
+            if (val > 999) val = 999;
+            currentQuantity = val;
+            this.value = val;
+            updatePricing();
+        });
+
+        // Botones de cantidad rápida
+        document.querySelectorAll('.quick-qty-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const addQty = parseInt(this.dataset.qty);
+                currentQuantity += addQty;
+                if (currentQuantity > 999) currentQuantity = 999;
+                document.getElementById('quantityInput').value = currentQuantity;
+                updatePricing();
+            });
+        });
+
+        // Botón añadir al carrito
+        document.getElementById('addToCartBtn').addEventListener('click', () => {
+            const discount = getApplicableDiscount(currentQuantity);
+            const unitPrice = products[currentSize].price;
+            const subtotal = unitPrice * currentQuantity;
+            const total = discount ? subtotal * (1 - discount.discount) : subtotal;
+            
+            alert(`Producto añadido:\nMedida: ${currentSize} cm\nCantidad: ${currentQuantity}\nTotal: ${formatCurrency(total)}`);
+        });
+
+        // Inicializar
+        updatePricing();
+    </script>
+</body>
+</html>
