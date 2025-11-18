@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alma - Almohadas Dubella</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            position: relative;
+            background: #e8e8e8;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image-text {
+            font-size: 32px;
+            font-weight: 500;
+            color: #666;
+            text-align: center;
+        }
+
+        .zoom-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-size: 18px;
+        }
+
+        .product-info h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #000;
+            font-weight: 400;
+        }
+
+        .product-description {
+            font-size: 15px;
+            color: color: #666;;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .product-meta {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .product-meta a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .product-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .size-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .size-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .size-button {
+            min-width: 130px;
+            padding: 10px 20px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .size-button:hover {
+            background: #0052a3;
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 140px;
+        }
+
+        .label-text {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .unit-price {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .pack-info {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #f5f5f5;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .qty-input {
+            width: 50px;
+            height: 36px;
+            border: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .qty-input:focus {
+            outline: none;
+        }
+
+        .row-total {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            margin-left: auto;
+            min-width: 150px;
+            text-align: right;
+        }
+
+        .totals-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .total-row.subtotal {
+            font-size: 15px;
+            color: #666;
+        }
+
+        .total-row.final {
+            font-size: 22px;
+            font-weight: 700;
+            color: #000;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+            margin-top: 10px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 16px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #0052a3;
+        }
+
+        @media (max-width: 968px) {
+            .product-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px;
+            }
+
+            .size-row {
+                flex-wrap: wrap;
+            }
+
+            .row-total {
+                width: 100%;
+                text-align: left;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-section">
+            <div class="product-image">
+                <div class="product-image-text">Almohada Alma</div>
+                <div class="zoom-icon">🔍</div>
+            </div>
+
+            <div class="product-info">
+                <h1>Alma</h1>
+                <p class="product-description">
+                    Almohada Alma Hipersoft de Fibrargent: núcleo de espuma suave, altura media y soporte adaptable para un descanso confortable.
+                </p>
+                <div class="product-meta">
+                    <strong>SKU:</strong> 0110 | <strong>Categoría:</strong> <a href="/almohadas">Almohadas</a>
+                </div>
+
+                <!-- Fila 070x040 -->
+                <div class="size-row">
+                    <button class="size-button">070x040 cm</button>
+                    <div class="price-info">
+                        <span class="label-text">Precio unit.</span>
+                        <span class="unit-price">$ 26.350,29</span>
+                        <span class="pack-info">1 CANT. X 10 UNID.</span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="updateQty('070x040', -1)">-</button>
+                        <input type="number" class="qty-input" id="qty-070x040" value="1" min="0" onchange="calculateTotals()">
+                        <button class="qty-btn" onclick="updateQty('070x040', 1)">+</button>
+                    </div>
+                    <div class="row-total" id="total-070x040">$ 263.502,85</div>
+                </div>
+
+                <!-- Fila 070x044 -->
+                <div class="size-row">
+                    <button class="size-button">070x044 cm</button>
+                    <div class="price-info">
+                        <span class="label-text">Precio unit.</span>
+                        <span class="unit-price">$ 310.57,31</span>
+                        <span class="pack-info">1 CANT. X 10 UNID.</span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="updateQty('070x044', -1)">-</button>
+                        <input type="number" class="qty-input" id="qty-070x044" value="2" min="0" onchange="calculateTotals()">
+                        <button class="qty-btn" onclick="updateQty('070x044', 1)">+</button>
+                    </div>
+                    <div class="row-total" id="total-070x044">$ 621.146,16</div>
+                </div>
+
+                <!-- Fila 070x050 -->
+                <div class="size-row">
+                    <button class="size-button">070x050 cm</button>
+                    <div class="price-info">
+                        <span class="label-text">Precio unit.</span>
+                        <span class="unit-price">$ 34.821,25</span>
+                        <span class="pack-info">1 CANT. X 6 UNID.</span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="updateQty('070x050', -1)">-</button>
+                        <input type="number" class="qty-input" id="qty-070x050" value="1" min="0" onchange="calculateTotals()">
+                        <button class="qty-btn" onclick="updateQty('070x050', 1)">+</button>
+                    </div>
+                    <div class="row-total" id="total-070x050">$ 208.927,51</div>
+                </div>
+
+                <!-- Fila 080x040 -->
+                <div class="size-row">
+                    <button class="size-button">080x040 cm</button>
+                    <div class="price-info">
+                        <span class="label-text">Precio unit.</span>
+                        <span class="unit-price">$ 24.076,84</span>
+                        <span class="pack-info">1 CANT. X 10 UNID.</span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="updateQty('080x040', -1)">-</button>
+                        <input type="number" class="qty-input" id="qty-080x040" value="1" min="0" onchange="calculateTotals()">
+                        <button class="qty-btn" onclick="updateQty('080x040', 1)">+</button>
+                    </div>
+                    <div class="row-total" id="total-080x040">$ 240.768,39</div>
+                </div>
+
+                <div class="totals-section">
+                    <div class="total-row subtotal">
+                        <span>Subtotal:</span>
+                        <span id="subtotalAmount">$ 1.334.344,91</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Total:</span>
+                        <span id="finalTotal">$ 1.334.344,91</span>
+                    </div>
+                </div>
+
+                <button class="add-to-cart-btn" onclick="addToCart()">Añadir a la cotización</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de productos con precios unitarios y unidades por paquete
+        const products = {
+            '070x040': { 
+                unitPrice: 26350.29, 
+                unitsPerPack: 10,
+                packPrice: 263502.85 
+            },
+            '070x044': { 
+                unitPrice: 310.5731, 
+                unitsPerPack: 10,
+                packPrice: 310573.1 
+            },
+            '070x050': { 
+                unitPrice: 34821.25, 
+                unitsPerPack: 6,
+                packPrice: 208927.51 
+            },
+            '080x040': { 
+                unitPrice: 24076.84, 
+                unitsPerPack: 10,
+                packPrice: 240768.39 
+            }
+        };
+
+        function formatCurrency(amount) {
+            // Formato argentino: separador de miles con punto, decimales con coma
+            return '$ ' + amount.toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                .replace(/\.(\d{2})$/, ',$1');
+        }
+
+        function updateQty(size, change) {
+            const input = document.getElementById(`qty-${size}`);
+            let currentValue = parseInt(input.value) || 0;
+            let newValue = currentValue + change;
+            
+            if (newValue < 0) newValue = 0;
+            
+            input.value = newValue;
+            calculateTotals();
+        }
+
+        function calculateRowTotal(size) {
+            const qty = parseInt(document.getElementById(`qty-${size}`).value) || 0;
+            const product = products[size];
+            const total = qty * product.packPrice;
+            
+            document.getElementById(`total-${size}`).textContent = formatCurrency(total);
+            return total;
+        }
+
+        function calculateTotals() {
+            let grandTotal = 0;
+            
+            // Calcular total de cada fila
+            Object.keys(products).forEach(size => {
+                grandTotal += calculateRowTotal(size);
+            });
+            
+            // Actualizar subtotal y total
+            document.getElementById('subtotalAmount').textContent = formatCurrency(grandTotal);
+            document.getElementById('finalTotal').textContent = formatCurrency(grandTotal);
+        }
+
+        function addToCart() {
+            const items = [];
+            let hasItems = false;
+            
+            Object.keys(products).forEach(size => {
+                const qty = parseInt(document.getElementById(`qty-${size}`).value) || 0;
+                if (qty > 0) {
+                    hasItems = true;
+                    const product = products[size];
+                    const totalUnits = qty * product.unitsPerPack;
+                    const totalPrice = qty * product.packPrice;
+                    items.push(`${size} cm: ${qty} paquete(s) = ${totalUnits} unidades - ${formatCurrency(totalPrice)}`);
+                }
+            });
+            
+            if (!hasItems) {
+                alert('Por favor, seleccione al menos un producto.');
+                return;
+            }
+            
+            const finalTotal = document.getElementById('finalTotal').textContent;
+            alert(`Añadido a la cotización:\n\n${items.join('\n')}\n\nTotal: ${finalTotal}`);
+        }
+
+        // Inicializar cálculos al cargar
+        calculateTotals();
+    </script>
+</body>
+</html>
